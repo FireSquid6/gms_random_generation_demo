@@ -1,4 +1,4 @@
-function store_room_data(_room)
+function store_area_data(_room,_layers,_x,_y)
 {
 	room_goto(_room)
 	var roomdata,meta,tiles,tilemap,objs_list,othercorner,doors_list,buff,str,filename,index
@@ -28,19 +28,11 @@ function store_room_data(_room)
 			type : type
 		}
 		
-		//save the door positions
-		
-		//save the object positions
-		
-		//save the tilemap
-		
-		//package the structs
-		roomdata = 
+		//save all the layers
+		var size = array_length(_layers)
+		for (var i = 0; i < _layers; i++)
 		{
-			metadata : meta
-			tilegrid : tiles
-			objs : objs_list
-			doors : doors_lists
+			
 		}
 		
 		//save the structs
