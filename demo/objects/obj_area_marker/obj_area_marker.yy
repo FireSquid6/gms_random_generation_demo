@@ -1,7 +1,7 @@
 {
   "spriteId": {
-    "name": "spr_corner1",
-    "path": "sprites/spr_corner1/spr_corner1.yy",
+    "name": "spr_area_marker",
+    "path": "sprites/spr_area_marker/spr_area_marker.yy",
   },
   "solid": false,
   "visible": true,
@@ -21,16 +21,14 @@
   "physicsKinematic": false,
   "physicsShapePoints": [],
   "eventList": [],
-  "properties": [
-    {"varType":1,"value":"0","rangeEnabled":false,"rangeMin":0.0,"rangeMax":10.0,"listItems":[],"multiselect":false,"filters":[],"resourceVersion":"1.0","name":"channel","tags":[],"resourceType":"GMObjectProperty",},
-  ],
+  "properties": [],
   "overriddenProperties": [],
   "parent": {
     "name": "Room Building",
     "path": "folders/Objects/Room Building.yy",
   },
   "resourceVersion": "1.0",
-  "name": "obj_tl_corner",
+  "name": "obj_area_marker",
   "tags": [],
   "resourceType": "GMObject",
 }

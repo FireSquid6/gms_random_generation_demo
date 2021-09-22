@@ -1,50 +1,122 @@
-function store_area_data(_room,_layers,_x,_y)
+enum LAYER_TYPES
+{
+	INSTANCE,
+	TILE,
+	ASSET
+}
+
+function get_area_data(_room)
 {
 	room_goto(_room)
-	var roomdata,meta,tiles,tilemap,objs_list,othercorner,doors_list,buff,str,filename,index
+	var meta,areadata,list = [],layername,layertype,layerdata,layerstring
 	
-	index=0
-	othercorner=noone
+	var layers = layer_get_all()
 	
-	//for every left corner, create a thing
-	with obj_tl_corner
-	{
-		//get the other corner
-		with obj_br_corner
-		{
-			if channel=other.channel
-			{
-				othercorner=id
-				break
-			}
-		}
-		
+	//for every area marker create a struct
+	with obj_area_marker
+	{	
 		//save the metadata
 		meta = 
 		{
-			width : point_distance(x,0,othercorner.x,0)
-			length : point_distance(0,y,0,othercorner.y)
-			size : size
-			type : type
+			area_width : point_distance(bbox_left,bbox_top,bbox_right,bbox_top),
+			area_height : point_distance(bbox_left,bbox_top,bbox_left,bbox_bottom),
+			areaname : areaname
+		}
+		
+		areadata = 
+		{
+			metadata : meta
 		}
 		
 		//save all the layers
-		var size = array_length(_layers)
-		for (var i = 0; i < _layers; i++)
+		var size = array_length(layers)
+		for (var i = 0; i < size; i++)
 		{
+			//get the layer type
+			layername = layer_get_name(layers[i])
+			layerstring = string_char_at(layername, 0) + string_char_at(layername, 1) + string_char_at(layername, 2)
 			
+			layerdata = 
+			{
+				metadata : 
+				{
+					layer_name : layername
+				}
+			}
+			
+			//do stuff based on each layer
+			switch layerstring
+			{
+				case "lay":
+					//metadata & setup
+					layertype = LAYER_TYPES.INSTANCE
+					layerdata.metadata.layer_type = layertype
+					layerdata.instance_list = []
+					
+					//save each object in instance list
+					//why isn't there a built in function to get all instances in a layer
+					//this is stupid
+					var layid = layer_get_id(layername)
+					var mydepth = layer_get_depth(layid)
+					with all
+					{
+						//check if in the layer and in bounds
+						if depth == mydepth && place_meeting(x, y, other)
+						{
+							//save the object to the list
+							array_push(layerdata.instance_list, save_object(id))
+						}
+					}
+					
+					break
+				case "tls":
+					//setup metadata
+					layertype = LAYER_TYPES.TILE
+					layerdata.metadata.layer_type = layertype
+					layerdata.metadata.tilemap_id = layer_tilemap_get_id(layername)
+					layerdata.metadata.tileset = tilemap_get_tileset(layerdata.metadata.tilemap_id)
+					
+					//iterate through a grid
+					var grid = ds_grid_create(width, height)
+					
+					var column = 0
+					var row = 0
+					var tile, xx, yy
+					
+					while row < height
+					{
+						if column > width
+						{
+							column = 0
+							row ++
+						}
+						
+						xx = column * CELL_WIDTH
+						yy = row * CELL_HEIGHT
+						tile = tilemap_get_at_pixel(layerdata.metadata.tilemap_id, xx, yy)
+						
+						column ++
+					}
+					
+					//add grid to layerdata
+					layerdata.grid = grid
+					break
+				case "ass":
+					//I'm not making asset layer saving yet
+					layertype = LAYER_TYPES.ASSET
+					layerdata.metadata.layer_type = layertype
+					
+					break
+			}
+			
+			//add struct to areadata
+			variable_struct_set(areadata, layername, layerdata)
 		}
 		
-		//save the structs
-		str = json_stringify(roomdata)
-		buff = buffer_create(1,buffer_grow,1)
-		buffer_write(buff,buffer_string,str)
-		
-		filename = "ROOM_DATA_"+string(index)+".json"
-		buffer_save(buff,filename)
-		
-		//reset
-		othercorner=noone
-		index++
+		//add the area data to the area list
+		array_push(list,areadata)
 	}
+	
+	//return the completed list of areas
+	return list
 }
