@@ -26,10 +26,12 @@ function get_area_data(_room)
 		areadata = 
 		{
 			metadata : meta
+			layerlist : []
 		}
 		
 		//save all the layers
 		var size = array_length(layers)
+		var layer_is_saved = true
 		for (var i = 0; i < size; i++)
 		{
 			//get the layer type
@@ -107,10 +109,13 @@ function get_area_data(_room)
 					layerdata.metadata.layer_type = layertype
 					
 					break
+				default:
+					layer_is_saved = false
+					break
 			}
 			
 			//add struct to areadata
-			variable_struct_set(areadata, layername, layerdata)
+			if array_is_saved array_push(areadata.layerlist, layerdata)
 		}
 		
 		//add the area data to the area list
@@ -119,4 +124,56 @@ function get_area_data(_room)
 	
 	//return the completed list of areas
 	return list
+}
+
+function place_area_data(area, _x, _y)
+{
+	var list = area.layerlist
+	var size = array_length(list)
+	var currentlayer
+	
+	for (var i = 0; i < size; i++)
+	{
+		currentlayer = list[i]
+		switch currentlayer.metadata.layer_type
+		{
+			case LAYER_TYPES.INSTANCE:
+				
+				break
+			case LAYER_TYPES.TILE:
+				
+				break
+			case LAYER_TYPES.ASSET:
+				break
+		}
+	}
+}
+
+#macro AREA_FILE_DIRECTORY "areas/"
+
+function save_area_data(area_data_list)
+{
+	var data, name, str, buff
+	for (var i = 0; i < array_length(area_data_list); i++)
+	{
+		data = area_data_list[i]
+		name = data.metadata.areaname
+		name = AREA_FILE_DIRECTORY + name + ".json"
+		
+		str = json_stringify(str)
+		buff = buffer_create(1, buffer_grow, 1)
+		buffer_write(buff, buffer_string, str)
+		
+		buffer_save(buff, name)
+	}
+}
+
+function load_area_data(name)
+{
+	var fname = AREA_FILE_DIRECTORY + name + ".json"
+	var buff = buffer_load(fname)
+	var str = buffer_read(buff, buffer_string)
+	var struct = json_decode(str)
+	
+	return struct
 }
