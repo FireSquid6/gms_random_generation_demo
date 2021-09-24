@@ -3,7 +3,6 @@
     {"id":{"name":"save_object","path":"scripts/save_object/save_object.yy",},"order":2,},
     {"id":{"name":"spr_corner1","path":"sprites/spr_corner1/spr_corner1.yy",},"order":0,},
     {"id":{"name":"store_room_data","path":"scripts/store_room_data/store_room_data.yy",},"order":1,},
-    {"id":{"name":"save_area","path":"scripts/save_area/save_area.yy",},"order":4,},
     {"id":{"name":"obj_chest","path":"objects/obj_chest/obj_chest.yy",},"order":0,},
     {"id":{"name":"spr_corner2","path":"sprites/spr_corner2/spr_corner2.yy",},"order":1,},
     {"id":{"name":"spr_area_marker","path":"sprites/spr_area_marker/spr_area_marker.yy",},"order":3,},
