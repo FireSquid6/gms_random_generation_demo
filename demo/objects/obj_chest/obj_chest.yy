@@ -24,7 +24,7 @@
   "overriddenProperties": [],
   "parent": {
     "name": "Items",
-    "path": "folders/Objects/Items.yy",
+    "path": "folders/Data/Objects/Items.yy",
   },
   "resourceVersion": "1.0",
   "name": "obj_chest",

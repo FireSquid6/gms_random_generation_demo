@@ -21,11 +21,13 @@
   "physicsKinematic": false,
   "physicsShapePoints": [],
   "eventList": [],
-  "properties": [],
+  "properties": [
+    {"varType":2,"value":"coolarea","rangeEnabled":false,"rangeMin":0.0,"rangeMax":10.0,"listItems":[],"multiselect":false,"filters":[],"resourceVersion":"1.0","name":"areaname","tags":[],"resourceType":"GMObjectProperty",},
+  ],
   "overriddenProperties": [],
   "parent": {
-    "name": "Room Building",
-    "path": "folders/Objects/Room Building.yy",
+    "name": "Room Saving",
+    "path": "folders/Data/Room Saving.yy",
   },
   "resourceVersion": "1.0",
   "name": "obj_area_marker",

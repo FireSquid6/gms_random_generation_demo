@@ -6,7 +6,7 @@
     "path": "folders/Data/Room Saving.yy",
   },
   "resourceVersion": "1.0",
-  "name": "store_room_data",
+  "name": "store_object",
   "tags": [],
   "resourceType": "GMScript",
 }

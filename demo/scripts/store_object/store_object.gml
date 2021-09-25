@@ -6,15 +6,15 @@ function save_object(_id)
 	//set default vars
 	var mystruct = 
 	{
-		layer : _id.layer
-		object_index : _id.object_index
-		x : _id.x
-		y : _id.y
-		image_xscale : _id.image_xscale
-		image_yscale : _id.image_yscale
-		image_blend : _id.image_blend
-		image_alpha : _id.image_alpha
-		sprite_index : _id.sprite_index
+		layer : _id.layer,
+		object_index : _id.object_index,
+		x : _id.x,
+		y : _id.y,
+		image_xscale : _id.image_xscale,
+		image_yscale : _id.image_yscale,
+		image_blend : _id.image_blend,
+		image_alpha : _id.image_alpha,
+		sprite_index : _id.sprite_index,
 		image_index : _id.image_index
 	}
 	

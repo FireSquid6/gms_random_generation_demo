@@ -25,7 +25,7 @@ function get_area_data(_room)
 		
 		areadata = 
 		{
-			metadata : meta
+			metadata : meta,
 			layerlist : []
 		}
 		
@@ -36,86 +36,91 @@ function get_area_data(_room)
 		{
 			//get the layer type
 			layername = layer_get_name(layers[i])
-			layerstring = string_char_at(layername, 0) + string_char_at(layername, 1) + string_char_at(layername, 2)
+			layerstring = string_char_at(layername, 1) + string_char_at(layername, 2) + string_char_at(layername, 3)
 			
-			layerdata = 
+			if layername != "lay_meta"
 			{
-				metadata : 
+				layerdata = 
 				{
-					layer_name : layername
+					metadata : 
+					{
+						layer_name : layername
+					}
 				}
-			}
 			
-			//do stuff based on each layer
-			switch layerstring
-			{
-				case "lay":
-					//metadata & setup
-					layertype = LAYER_TYPES.INSTANCE
-					layerdata.metadata.layer_type = layertype
-					layerdata.instance_list = []
+				//do stuff based on each layer
+				switch layerstring
+				{
+					case "lay":
+						//metadata & setup
+						layertype = LAYER_TYPES.INSTANCE
+						layerdata.metadata.layer_type = layertype
+						layerdata.instance_list = []
 					
-					//save each object in instance list
-					//why isn't there a built in function to get all instances in a layer
-					//this is stupid
-					var layid = layer_get_id(layername)
-					var mydepth = layer_get_depth(layid)
-					with all
-					{
-						//check if in the layer and in bounds
-						if depth == mydepth && place_meeting(x, y, other)
+						//save each object in instance list
+						//why isn't there a built in function to get all instances in a layer
+						//this is stupid
+						var layid = layer_get_id(layername)
+						var mydepth = layer_get_depth(layid)
+						with all
 						{
-							//save the object to the list
-							array_push(layerdata.instance_list, save_object(id))
+							//check if in the layer and in bounds
+							if depth == mydepth && place_meeting(x, y, other) && self.id != other.id
+							{
+								//save the object to the list
+								array_push(layerdata.instance_list, save_object(id))
+							}
 						}
-					}
 					
-					break
-				case "tls":
-					//setup metadata
-					layertype = LAYER_TYPES.TILE
-					layerdata.metadata.layer_type = layertype
-					layerdata.metadata.tilemap_id = layer_tilemap_get_id(layername)
-					layerdata.metadata.tileset = tilemap_get_tileset(layerdata.metadata.tilemap_id)
+						break
+					case "tls":
+						//setup metadata
+						layertype = LAYER_TYPES.TILE
+						layerdata.metadata.layer_type = layertype
+						layerdata.metadata.tilemap_id = layer_tilemap_get_id(layername)
+						layerdata.metadata.tileset = tilemap_get_tileset(layerdata.metadata.tilemap_id)
 					
-					//iterate through a grid
-					var grid = ds_grid_create(width, height)
+						//iterate through a grid
+						var width = bbox_right - bbox_left div CELL_WIDTH
+						var height = bbox_bottom - bbox_top div CELL_HEIGHT
+						var grid = ds_grid_create(width, height)
 					
-					var column = 0
-					var row = 0
-					var tile, xx, yy
+						var column = 0
+						var row = 0
+						var tile, xx, yy
 					
-					while row < height
-					{
-						if column > width
+						while row < height
 						{
-							column = 0
-							row ++
+							if column > width
+							{
+								column = 0
+								row ++
+							}
+						
+							xx = bbox_left + (column * CELL_WIDTH)
+							yy = bbox_top + (row * CELL_HEIGHT)
+							tile = tilemap_get_at_pixel(layerdata.metadata.tilemap_id, xx, yy)
+						
+							column ++
 						}
-						
-						xx = column * CELL_WIDTH
-						yy = row * CELL_HEIGHT
-						tile = tilemap_get_at_pixel(layerdata.metadata.tilemap_id, xx, yy)
-						
-						column ++
-					}
 					
-					//add grid to layerdata
-					layerdata.grid = grid
-					break
-				case "ass":
-					//I'm not making asset layer saving yet
-					layertype = LAYER_TYPES.ASSET
-					layerdata.metadata.layer_type = layertype
+						//add grid to layerdata
+						layerdata.grid = grid
+						break
+					case "ass":
+						//I'm not making asset layer saving yet
+						layertype = LAYER_TYPES.ASSET
+						layerdata.metadata.layer_type = layertype
 					
-					break
-				default:
-					layer_is_saved = false
-					break
-			}
+						break
+					default:
+						layer_is_saved = false
+						break
+				}
 			
-			//add struct to areadata
-			if array_is_saved array_push(areadata.layerlist, layerdata)
+				//add struct to areadata
+				if layer_is_saved array_push(areadata.layerlist, layerdata)
+			}
 		}
 		
 		//add the area data to the area list
@@ -124,29 +129,6 @@ function get_area_data(_room)
 	
 	//return the completed list of areas
 	return list
-}
-
-function place_area_data(area, _x, _y)
-{
-	var list = area.layerlist
-	var size = array_length(list)
-	var currentlayer
-	
-	for (var i = 0; i < size; i++)
-	{
-		currentlayer = list[i]
-		switch currentlayer.metadata.layer_type
-		{
-			case LAYER_TYPES.INSTANCE:
-				
-				break
-			case LAYER_TYPES.TILE:
-				
-				break
-			case LAYER_TYPES.ASSET:
-				break
-		}
-	}
 }
 
 #macro AREA_FILE_DIRECTORY "areas/"
@@ -160,20 +142,10 @@ function save_area_data(area_data_list)
 		name = data.metadata.areaname
 		name = AREA_FILE_DIRECTORY + name + ".json"
 		
-		str = json_stringify(str)
+		str = json_stringify(data)
 		buff = buffer_create(1, buffer_grow, 1)
 		buffer_write(buff, buffer_string, str)
 		
 		buffer_save(buff, name)
 	}
-}
-
-function load_area_data(name)
-{
-	var fname = AREA_FILE_DIRECTORY + name + ".json"
-	var buff = buffer_load(fname)
-	var str = buffer_read(buff, buffer_string)
-	var struct = json_decode(str)
-	
-	return struct
 }

@@ -3,10 +3,10 @@
   "isCompatibility": false,
   "parent": {
     "name": "Room Saving",
-    "path": "folders/Scripts/Room Saving.yy",
+    "path": "folders/Data/Room Saving.yy",
   },
   "resourceVersion": "1.0",
-  "name": "save_object",
+  "name": "load_area_data",
   "tags": [],
   "resourceType": "GMScript",
 }
