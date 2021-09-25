@@ -33,12 +33,12 @@ function save_object(_id)
 	return mystruct
 }
 
-function load_object(_struct)
+function load_object(_struct, _layer)
 {
 	//get names list
 	var names_list=variable_struct_get_names(_struct)
 	var val,str
-	var _id=instance_create_layer(0,0,_struct.layer,_struct.object_index)
+	var _id = instance_create_layer(0,0,_layer,_struct.object_index)
 	
 	//set default vars
 	with _id

@@ -44,7 +44,7 @@ function get_area_data(_room)
 				{
 					metadata : 
 					{
-						layer_name : layername
+						
 					}
 				}
 			
@@ -79,10 +79,12 @@ function get_area_data(_room)
 						layerdata.metadata.layer_type = layertype
 						layerdata.metadata.tilemap_id = layer_tilemap_get_id(layername)
 						layerdata.metadata.tileset = tilemap_get_tileset(layerdata.metadata.tilemap_id)
+						layerdata.metadata.tilemap_width = (bbox_right - bbox_left) div CELL_WIDTH
+						layerdata.metadata.tilemap_height = (bbox_bottom - bbox_top) div CELL_HEIGHT
 					
 						//iterate through a grid
-						var width = bbox_right - bbox_left div CELL_WIDTH
-						var height = bbox_bottom - bbox_top div CELL_HEIGHT
+						var width = layerdata.metadata.tilemap_width
+						var height = layerdata.metadata.tilemap_height
 						var grid = ds_grid_create(width, height)
 					
 						var column = 0
@@ -100,6 +102,8 @@ function get_area_data(_room)
 							xx = bbox_left + (column * CELL_WIDTH)
 							yy = bbox_top + (row * CELL_HEIGHT)
 							tile = tilemap_get_at_pixel(layerdata.metadata.tilemap_id, xx, yy)
+							
+							ds_grid_add(grid, column, row, tile)
 						
 							column ++
 						}
