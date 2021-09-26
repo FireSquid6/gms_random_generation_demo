@@ -11,7 +11,7 @@
     {"id":{"name":"spr_chest","path":"sprites/spr_chest/spr_chest.yy",},"order":2,},
     {"id":{"name":"obj_area_marker","path":"objects/obj_area_marker/obj_area_marker.yy",},"order":2,},
     {"id":{"name":"ts_tileset","path":"tilesets/ts_tileset/ts_tileset.yy",},"order":0,},
-    {"id":{"name":"game","path":"objects/game/game.yy",},"order":1,},
+    {"id":{"name":"game","path":"objects/game/game.yy",},"order":0,},
     {"id":{"name":"rm_game","path":"rooms/rm_game/rm_game.yy",},"order":1,},
     {"id":{"name":"rm_area","path":"rooms/rm_area/rm_area.yy",},"order":0,},
   ],

@@ -24,8 +24,8 @@
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "Data",
-    "path": "folders/Data.yy",
+    "name": "Meta",
+    "path": "folders/Data/Meta.yy",
   },
   "resourceVersion": "1.0",
   "name": "game",
