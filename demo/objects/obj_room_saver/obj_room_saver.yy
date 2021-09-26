@@ -23,8 +23,8 @@
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "Room Saving",
-    "path": "folders/Data/Room Saving.yy",
+    "name": "Room Generation",
+    "path": "folders/Data/Room Generation.yy",
   },
   "resourceVersion": "1.0",
   "name": "obj_room_saver",
